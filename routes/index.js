@@ -28,7 +28,6 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   console.log(req.body);
-  var inputType = req.body.button;
 
   // Use connect method to connect to the server
   MongoClient.connect(url, function(err, db) {
