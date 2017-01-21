@@ -2,6 +2,7 @@ var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');
 var express = require('express');
 var router = express.Router();
+var session = require('client-sessions');
 
 // Connection URL
 var url = 'mongodb://localhost:27017/devsideprojects';
@@ -36,8 +37,8 @@ router.post('/', function(req, res, next) {
 
     findUser(db, { username: req.body.username }, function(user) {
       if (user.length != 0) {
-      	findUser(db, { username: req.body.username, password: req.body.password }, function(docs) {
-      		if (user.length != 0) {            
+      	findUser(db, { username: req.body.username, password: req.body.password }, function(user) {
+      		if (user.length != 0) {
             res.render('search');
       		} else {
       			res.send("Incorrect password");
