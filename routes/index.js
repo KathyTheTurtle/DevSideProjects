@@ -5,7 +5,6 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  temp = {}
   console.log("Entered /");
   // Connection URL
   var url = 'mongodb://localhost:27017/devsideprojects';
@@ -13,20 +12,17 @@ router.get('/', function(req, res, next) {
   // Use connect method to connect to the server
   MongoClient.connect(url, function(err, db) {
   	assert.equal(null, err);
-	console.log("Connected successfully to server");
+    console.log("Connected successfully to server GET");
 
-	findDocuments(db, function(something) {
-		console.log("WE GOT BACK: ");
-		console.log(something);
-		temp = something[0];
-      res.render('index', { name: temp.firstname });
+    var query = {'firstname': 'annon'}
+    findDocuments(db, query, function(query_result) {
+      console.log("WE GOT BACK: ");
+      console.log(query_result);
+      res.render('index', { name: query_result[0].name });
       db.close();
     });
   });
 
-  /*console.log("TEMP: ");
-  console.log(temp);
-  res.render('index', { name: temp.firstname });*/
 });
 
 router.post('/', function(req, res, next) {
@@ -40,19 +36,18 @@ router.post('/', function(req, res, next) {
     console.log("Connected successfully to server POST");
 
     insertDocuments(db, req.body, function() {
+      res.render('index', { name: req.body.name });
       db.close();
     });
   });
 
-  //res.send(req.body);
-  res.render('index', { name: 'Joyce' });
 });
 
-var findDocuments = function(db, callback) {
+var findDocuments = function(db, query, callback) {
   // Get the documents collection
-  var collection = db.collection('documents');
+  var collection = db.collection('users');
   // Find some documents
-  collection.find({'firstname': 'Ass'}).toArray(function(err, docs) {
+  collection.find(query).toArray(function(err, docs) {
     assert.equal(err, null);
     console.log("Found the following records");
     console.log(docs);
@@ -62,16 +57,13 @@ var findDocuments = function(db, callback) {
 
 var insertDocuments = function(db, reqbody, callback) {
   // Get the documents collection
-  var collection = db.collection('documents');
+  var collection = db.collection('users');
   console.log(reqbody);
   // Insert some documents
-  collection.insertMany([
-    reqbody
-  ], function(err, result) {
+  collection.save(reqbody,
+    function(err, result) {
     assert.equal(err, null);
-    assert.equal(1, result.result.n);
-    assert.equal(1, result.ops.length);
-    console.log("Inserted 3 documents into the collection");
+    console.log("Inserted the document into the collection");
     callback(result);
   });
 }
