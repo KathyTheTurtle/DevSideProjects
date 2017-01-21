@@ -9,18 +9,27 @@ var session = require('client-sessions');
 var url = 'mongodb://localhost:27017/devsideprojects';
 
 router.get('/', function(req, res, next) {
-	var long = req.session.user[0].location.coordinates[0];
-	var lat = req.session.user[0].location.coordinates[1];
+  var long = req.session.user[0].location.coordinates[0];
+  var lat = req.session.user[0].location.coordinates[1];
 
-	var query = { location: { $nearSphere: { $geometry: { type: "Point", coordinates: [long, lat] }, $maxDistance: 500 * 1609.34 } } };
-	MongoClient.connect(url, function(err, db) {
-		findUsers(db, query, function(result) {
-			res.render('search', { lat: lat, long: long });
-		});
-	});
+  res.render('search', { lat: lat, long: long });
 });
 
 router.post('/', function(req, res, next) {
+  var long = req.session.user[0].location.coordinates[0];
+  var lat = req.session.user[0].location.coordinates[1];
+
+  var maxDistance = parseInt(req.body.maxDistance) * 1000;
+  console.log("maxDistance");
+  console.log(maxDistance);
+
+  var query = { location: { $nearSphere: { $geometry: { 
+    type: "Point", coordinates: [long, lat] }, $maxDistance: maxDistance } } };
+  MongoClient.connect(url, function(err, db) {
+    findUsers(db, query, function(result) {
+    });
+  });
+
 });
 
 var findUsers = function(db, query, callback) {

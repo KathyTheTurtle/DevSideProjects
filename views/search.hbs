@@ -1,4 +1,9 @@
 <h3>Search for Users</h3>
+<form action="/search" method="post">
+  Max Distance (km):<br>
+  <input type="text" name="maxDistance"><br>
+  <input type="submit" name="button" value="Search"><br>
+</form>
 <div id="map" style="height:500px;width:100%"></div>
 <script>
   function initMap() {
