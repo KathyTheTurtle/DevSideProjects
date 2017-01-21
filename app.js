@@ -1,4 +1,5 @@
-var MongoClient = require('mongodb').MongoClient
+var MongoClient = require('mongodb').MongoClient;
+var geocoder = require('geocoder');
 var assert = require('assert');
 var express = require('express');
 var path = require('path');
