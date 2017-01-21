@@ -10,8 +10,9 @@ var url = 'mongodb://localhost:27017/devsideprojects';
 
 router.get('/', function(req, res, next) {
 	console.log("req.session.user");
-	console.log(req.session.user[0].lat);
-	res.render('search', { lat: req.session.user[0].lat, long: req.session.user[0].long });
+	console.log(req.session.user[0]);
+	res.render('search', { lat: req.session.user[0].location.coordinates[1], 
+		long: req.session.user[0].location.coordinates[0] });
 });
 
 router.post('/', function(req, res, next) {
