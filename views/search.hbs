@@ -1,10 +1,10 @@
 <h3>My Google Maps Demo</h3>
-<div id="map" style="height:400px;width:100%"></div>
+<div id="map" style="height:500px;width:100%"></div>
 <script>
   function initMap() {
-    var uluru = {lat: -25.363, lng: 131.044};
+    var uluru = {lat: {{lat}}, lng: {{long}} };
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4,
+      zoom: 13,
       center: uluru
     });
     var marker = new google.maps.Marker({

@@ -30,10 +30,6 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   console.log(req.body);
-
-
-
-
   // Use connect method to connect to the server
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
@@ -43,7 +39,7 @@ router.post('/', function(req, res, next) {
       if (user.length != 0) {
       	findUser(db, { username: req.body.username, password: req.body.password }, function(user) {
       		if (user.length != 0) {  
-            req.session.username = user;
+            req.session.user = user;
             res.redirect('search');
       		} else {
       			res.send("Incorrect password");
