@@ -9,13 +9,32 @@ var session = require('client-sessions');
 var url = 'mongodb://localhost:27017/devsideprojects';
 
 router.get('/', function(req, res, next) {
-	console.log("req.session.user");
-	console.log(req.session.user[0]);
-	res.render('search', { lat: req.session.user[0].location.coordinates[1], 
-		long: req.session.user[0].location.coordinates[0] });
+	var long = req.session.user[0].location.coordinates[0];
+	var lat = req.session.user[0].location.coordinates[1];
+
+	var query = { location: { $nearSphere: { $geometry: { type: "Point", coordinates: [long, lat] }, $maxDistance: 500 * 1609.34 } } };
+	MongoClient.connect(url, function(err, db) {
+		findUsers(db, query, function(result) {
+			res.render('search', { lat: lat, long: long });
+		});
+	});
 });
 
 router.post('/', function(req, res, next) {
 });
+
+var findUsers = function(db, query, callback) {
+  // Get the documents collection
+  var collection = db.collection('users');
+  // Find some documents
+  console.log(query);
+  collection.createIndex({ location: "2dsphere" });
+  collection.find(query).toArray(function(err, docs) {
+    assert.equal(err, null);
+    console.log("Found the following records");
+    console.log(docs);
+    callback(docs);
+  });      
+}
 
 module.exports = router;
