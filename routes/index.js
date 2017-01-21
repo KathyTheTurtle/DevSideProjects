@@ -35,11 +35,10 @@ router.post('/', function(req, res, next) {
     console.log("Connected successfully to server POST");
 
     findUser(db, { username: req.body.username }, function(docs) {
-      res.render('index');
       if (docs.length != 0) {
-      	findUser(db, req.body, function(docs) {
+      	findUser(db, { username: req.body.username, password: req.body.password }, function(docs) {
       		if (docs.length != 0) {
-      			res.send("Login successful");
+            res.render('search');
       		} else {
       			res.send("Incorrect password");
       		}
