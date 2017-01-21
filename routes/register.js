@@ -1,4 +1,5 @@
 var MongoClient = require('mongodb').MongoClient
+var geocoder = require('geocoder');
 var assert = require('assert');
 var express = require('express');
 var router = express.Router();
@@ -15,6 +16,10 @@ router.post('/', function(req, res, next) {
 	var email = req.body.email;
 	var password = req.body.password;
 
+	var address = req.body.street + ", " + req.body.city + ", " + req.body.province;
+	var lat;
+	var long;
+
 	// Use connect method to connect to the server
  	MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
@@ -24,10 +29,19 @@ router.post('/', function(req, res, next) {
 	      if (result.length == 0) {
 	      	findUser(db, { email: email }, function(result) {
 	      		if (result.length == 0) {
-	      			insertUser(db, {username: username, email: email, password: password}, function(result) {
-	      				res.send("Registration successful");
-	      				db.close();
-	      			})
+
+					geocoder.geocode(address, function ( err, data ) {
+						lat = data.results[0].geometry.location.lat;
+						long = data.results[0].geometry.location.lng;
+						
+		      			insertUser(db, {username: username, email: email, 
+		      				password: password, address: address, lat: lat, long: long}, function(result) {
+		      				res.send("Registration successful");
+		      				db.close();
+		      			})
+					});
+
+
 	      		} else {
 	      			res.send("An account with this email already exists");
 	      		}
