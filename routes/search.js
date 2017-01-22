@@ -51,7 +51,7 @@ router.post('/', function(req, res, next) {
         result.sort(compare);
       }
 
-      res.send(result);
+      res.send(JSON.stringify(result));
     });
   });
 

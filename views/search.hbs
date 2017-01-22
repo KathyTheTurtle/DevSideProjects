@@ -15,54 +15,55 @@
                 </div>
 
                 <label class="labelsClass" for="inlineCheckbox1"><span class="glyphicon glyphicon-text-size" aria-hidden="true"></span>    Languages</label><br><br>
-                <div class="row">
+                <div id="languages" class="row">
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="language" id="inlineCheckbox1" value="option1"> Python
+                            <input type="checkbox" name="language" id="inlineCheckbox1" value="python"> Python
                         </label>
                     </div>            
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="language" id="inlineCheckbox2" value="option1"> Java
+                            <input type="checkbox" name="language" id="inlineCheckbox2" value="java"> Java
                         </label>
                     </div>
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="language" id="inlineCheckbox3" value="option1"> C/C++
+                            <input type="checkbox" name="language" id="inlineCheckbox3" value="c"> C/C++
                         </label>
                     </div>
                 </div>
                 <br><br>
                 
                 <label class="labelsClass" for="inlineCheckbox4"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>    Frameworks</label><br><br>
-                <div class="row">
+                <div id="frameworks" class="row">
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="framework" id="inlineCheckbox4" value="option1"> React.js
+                            <input type="checkbox" name="framework" id="inlineCheckbox4" value="react.js"> React.js
                         </label>
                     </div>
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="framework" id="inlineCheckbox5" value="option1"> Node.js
+                            <input type="checkbox" name="framework" id="inlineCheckbox5" value="node.js"> Node.js
                         </label>
                     </div>
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="framework" id="inlineCheckbox6" value="option1"> Express.js
+                            <input type="checkbox" name="framework" id="inlineCheckbox6" value="express.js"> Express.js
                         </label>
                     </div>
                 </div>
                 <br><br>
+
                 <label class="labelsClass" for="inlineCheckbox7"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>    Databases</label><br><br>
-                <div class="row">
+                <div id="databases" class="row">
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="database" id="inlineCheckbox7" value="option1"> MongoDB
+                            <input type="checkbox" name="database" id="inlineCheckbox7" value="mongodb"> MongoDB
                         </label>
                     </div>
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="database" id="inlineCheckbox8" value="option1"> MySQL
+                            <input type="checkbox" name="database" id="inlineCheckbox8" value="mysql"> MySQL
                         </label>
                     </div>
                 </div>
@@ -91,7 +92,9 @@
   </div>
 </div>
 
-<div id="results-container" class="col-md-5"></div>
+<div id="results-container" class="col-md-5">
+    
+</div>
 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103Q_vQYcYg&callback=initMap">
@@ -99,21 +102,39 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103
 <script>
     $(document).ready(function() {
         $('#searchSubmit').click(function() {
+           event.preventDefault();
+           var maxDistance = $('#maxDistance').val();
+           var languages = [];
+           $('#languages input:checked').each(function() {
+                languages.push($(this).attr('value'));
+           });
+           var frameworks = [];
+           $('#frameworks input:checked').each(function() {
+                frameworks.push($(this).attr('value'));
+           });
+           var databases = [];
+           $('#databases input:checked').each(function() {
+                databases.push($(this).attr('value'));
+           });
            $.ajax({
-              url: '/',
+              url: '/search',
               data: {
-                 format: 'json'
+                maxDistance: maxDistance,
+                language: languages,
+                framework: frameworks,
+                database: databases                 
               },
               error: function() {
                  $('#results-container').html('<p>An error has occurred</p>');
               },
-              dataType: 'jsonp',
+              dataType: 'json',
               success: function(data) {
-                 var $title = $('<h1>').text(data.talks[0].talk_title);
-                 var $description = $('<p>').text(data.talks[0].talk_description);
-                 $('#results-container').append("<p>Hello</p>")
+                alert(data);
+                for(var i = 0; i < data.length; i++) {
+                    $('#results-container').append("<p>" + data[i].email + "</p>");
+                }                 
               },
-              type: 'GET'
+              type: 'POST'
            });
         });
 
