@@ -7,22 +7,26 @@ var session = require('client-sessions');
 // Connection URL
 var url = 'mongodb://localhost:27017/devsideprojects';
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
 	res.render('index');
 });
 
-
 router.post('/', function(req, res, next) {
-  console.log(req.body);
+  console.log("req.body: ", req.body);
+
   // Use connect method to connect to the server
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
-    console.log("Connected successfully to server POST");
+    console.log("Successfully connected to DB via POST to /");
 
-    findUser(db, { username: req.body.username }, function(user) {
+    var findUserQuery = { 
+      username: req.body.username, 
+      password: req.body.password 
+    };
+
+    findUser(db, { username: findUserQuery.username }, function(user) {
       if (user.length != 0) {
-      	findUser(db, { username: req.body.username, password: req.body.password }, function(user) {
+      	findUser(db, findUserQuery, function(user) {
       		if (user.length != 0) {  
             req.session.user = user;
             res.redirect('search');
@@ -39,8 +43,9 @@ router.post('/', function(req, res, next) {
 });
 
 var findUser = function(db, query, callback) {
-  // Get the documents collection
+  // Get the users collection
   var collection = db.collection('users');
+
   // Find some documents
   console.log(query);
   collection.find(query).toArray(function(err, user) {
@@ -49,17 +54,6 @@ var findUser = function(db, query, callback) {
     console.log(user);
     callback(user);
   });      
-}
-
-var insertDocuments = function(db, reqbody, callback) {
-  // Get the documents collection
-  var collection = db.collection('users');
-  // Insert some documents
-  collection.save(reqbody, function(err, result) {
-    assert.equal(err, null);
-    console.log("Inserted the document into the collection");
-    callback(result);
-  });
 }
 
 module.exports = router;
