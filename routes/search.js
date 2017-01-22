@@ -9,12 +9,15 @@ var session = require('client-sessions');
 var url = 'mongodb://localhost:27017/devsideprojects';
 
 router.get('/', function(req, res, next) {
-	var results = [];
-	//[{name:"Bob Smith", email:"bob@example.com", skillset:"C++"}, {name:"John Doe", email:"bob@example.com", skillset:"C, C++, Python"}];
 	var long = req.session.user[0].location.coordinates[0];
-  	var lat = req.session.user[0].location.coordinates[1];
-	res.render('search', {results: results, lat: lat, long: long });
-	//res.render('search', {results: results});
+  var lat = req.session.user[0].location.coordinates[1];
+
+  var searchData = {
+    lat: lat, 
+    long: long 
+  };
+
+	res.render('search', searchData);
 });
 
 router.post('/', function(req, res, next) {
