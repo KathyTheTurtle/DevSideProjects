@@ -33,10 +33,25 @@ router.post('/', function(req, res, next) {
 					geocoder.geocode(address, function ( err, data ) {
 						lat = data.results[0].geometry.location.lat;
 						long = data.results[0].geometry.location.lng;
+
+						var userObj = {
+							username: username, 
+							email: email, 
+  							password: password, 
+  							address: address, 
+  							location: {
+  								type: "Point", 
+  								coordinates: [long, lat]
+  							},
+  							skillset: {
+  								languages: [], 
+  								frameworks: [], 
+  								databases: []
+  							} 
+		      			};
 						
-		      			insertUser(db, {username: username, email: email, 
-		      				password: password, address: address, lat: lat, long: long}, function(result) {
-		      				res.send("Registration successful");
+		      			insertUser(db, userObj, function(result) {
+		      				res.redirect("/");
 		      				db.close();
 		      			})
 					});

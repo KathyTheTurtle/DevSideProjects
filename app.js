@@ -9,11 +9,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var hbs = require('hbs');
+var session = require('client-sessions');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var register = require('./routes/register');
 var search = require('./routes/search');
+var profile = require('./routes/profile');
 
 var app = express();
 
@@ -33,10 +35,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+  cookieName: 'session',
+  secret: '12334567890QWERTY',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
+
 app.use('/', routes);
 app.use('/users', users);
 app.use('/register', register);
 app.use('/search', search);
+app.use('/profile', profile);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

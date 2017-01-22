@@ -2,6 +2,7 @@ var MongoClient = require('mongodb').MongoClient
 var assert = require('assert');
 var express = require('express');
 var router = express.Router();
+var session = require('client-sessions');
 
 // Connection URL
 var url = 'mongodb://localhost:27017/devsideprojects';
@@ -9,36 +10,22 @@ var url = 'mongodb://localhost:27017/devsideprojects';
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	res.render('index');
-
-  // Use connect method to connect to the server
-  /*MongoClient.connect(url, function(err, db) {
-  	assert.equal(null, err);
-    console.log("Connected successfully to server GET");
-
-    var query = {'firstname': 'annon'}
-    findDocuments(db, query, function(query_result) {
-      console.log("WE GOT BACK: ");
-      console.log(query_result);
-      res.render('index', { name: query_result[0].name });
-      db.close();
-    });
-  });*/
-
 });
+
 
 router.post('/', function(req, res, next) {
   console.log(req.body);
-
   // Use connect method to connect to the server
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     console.log("Connected successfully to server POST");
 
-    findUser(db, { username: req.body.username }, function(docs) {
-      if (docs.length != 0) {
-      	findUser(db, { username: req.body.username, password: req.body.password }, function(docs) {
-      		if (docs.length != 0) {
-            res.render('search');
+    findUser(db, { username: req.body.username }, function(user) {
+      if (user.length != 0) {
+      	findUser(db, { username: req.body.username, password: req.body.password }, function(user) {
+      		if (user.length != 0) {  
+            req.session.user = user;
+            res.redirect('search');
       		} else {
       			res.send("Incorrect password");
       		}
@@ -56,11 +43,11 @@ var findUser = function(db, query, callback) {
   var collection = db.collection('users');
   // Find some documents
   console.log(query);
-  collection.find(query).toArray(function(err, docs) {
+  collection.find(query).toArray(function(err, user) {
     assert.equal(err, null);
     console.log("Found the following records");
-    console.log(docs);
-    callback(docs);
+    console.log(user);
+    callback(user);
   });      
 }
 
