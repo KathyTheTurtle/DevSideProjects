@@ -1,5 +1,7 @@
 <h2 style="text-align: center">Search for developers to join your project!</h2><br><br>
 <div class="row">
+    <div id="results-container" class="col-md-8 col-md-offset-2">    
+    </div>
     <div class="col-md-7">
         <div class="panel panel-login" style="padding: 20px">
             <label class="labelsClass" for="map">Location</label>
@@ -38,17 +40,17 @@
                 <div id="frameworks" class="row">
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="framework" id="inlineCheckbox4" value="react.js"> React.js
+                            <input type="checkbox" name="framework" id="inlineCheckbox4" value="reactjs"> React.js
                         </label>
                     </div>
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="framework" id="inlineCheckbox5" value="node.js"> Node.js
+                            <input type="checkbox" name="framework" id="inlineCheckbox5" value="nodejs"> Node.js
                         </label>
                     </div>
                     <div class="col-sm-4">
                         <label class="checkbox-inline">
-                            <input type="checkbox" name="framework" id="inlineCheckbox6" value="express.js"> Express.js
+                            <input type="checkbox" name="framework" id="inlineCheckbox6" value="expressjs"> Express.js
                         </label>
                     </div>
                 </div>
@@ -78,28 +80,35 @@
     <a href="/profile">Edit your profile</a>
   </div>
   <div id="person-template" style="visibility:hidden;">
-    <div class="media panel panel-login" style="width: 100%; padding: 10px; border: 1px solid #e5e5e5;">
+    <div class="media panel panel-login" style="width: 100%; padding: 10px;">
       <div class="media-left">
         <img class="media-object" width="64px" height="64px" src="http://www.sheffield.com/wp-content/uploads/2013/06/placeholder.png" alt="" style="border-radius: 100%">
       </div>
       <div class="media-body">
-        <div class="media-heading person-name" style="font-size: 25px"></div>
+        <div class="media-heading person-username" style="font-size: 25px"></div>
         <div class="media-heading person-email"></div>
         <div class="media-heading person-skillset"></div>
       </div>
-
-    </div>
-  </div>
+      <div class="media-right">
+        <a class="closeResult">
+            <span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="margin-left: 210px"></span>
+        </a>        
+        <input class="media-heading btn btn-primary" value="Invite"> 
+      </div>
+    </div>    
+  </div>  
 </div>
 
-<div id="results-container" class="col-md-5">    
-</div>
+
 
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103Q_vQYcYg&callback=initMap">
 </script>
 <script>
     $(document).ready(function() {
+        $(".closeResult").click(function() {
+            $(this).closest("div[id]").;
+        }
         $('#searchSubmit').click(function() {
            event.preventDefault();
            var maxDistance = $('#maxDistance').val();
@@ -128,13 +137,15 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103
               },
               dataType: 'json',
               success: function(data) {
-                alert(data);
                 for(var i = 0; i < data.length; i++) {
                     var template = $.parseHTML($("#person-template").html());
                     $('#results-container').append(template);                    
+                    $(".person-username", template).text(data[i].username);
                     $(".person-email", template).text(data[i].email);
+                    $(".person-skillset", template).text(data[i].skillset.languages[0]);
                     $(template).css("visibility", "visible");
-                }                 
+                }
+                $("#person-template").remove();                 
               },
               type: 'POST'
            });
