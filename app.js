@@ -12,20 +12,15 @@ var hbs = require('hbs');
 var session = require('client-sessions');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var register = require('./routes/register');
 var search = require('./routes/search');
 var profile = require('./routes/profile');
 
 var app = express();
 
-
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views' );
-
-
-// view engine setup
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -37,13 +32,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
   cookieName: 'session',
-  secret: '12334567890QWERTY',
+  secret: Math.random().toString(36).substr(2, 10);,
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
 }));
 
 app.use('/', routes);
-app.use('/users', users);
 app.use('/register', register);
 app.use('/search', search);
 app.use('/profile', profile);
