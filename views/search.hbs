@@ -1,60 +1,122 @@
+<h2 style="text-align: center">Search for developers to join your project!</h2><br><br>
+<div class="row">
+    <div class="col-md-7">
+        <div class="panel panel-login" style="padding: 20px">
+            <label class="labelsClass" for="map">Location</label>
+            <div id="map" style="height:400px;width:100%"></div>    
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="panel panel-login" style="padding: 20px; height: 465px">
+            <form action="/search" method="post">
+                <div class="form-group">
+                    <label class="labelsClass" for="maxDistance">Max Distance (km):</label><br><br>
+                    <input type="text" name="maxDistance" id="maxDistance" placeholder="e.g. 20" class="form-control required"><br>
+                </div>
+
+                <label class="labelsClass" for="inlineCheckbox1"><span class="glyphicon glyphicon-text-size" aria-hidden="true"></span>    Languages</label><br><br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="language" id="inlineCheckbox1" value="option1"> Python
+                        </label>
+                    </div>            
+                    <div class="col-sm-4">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="language" id="inlineCheckbox2" value="option1"> Java
+                        </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="language" id="inlineCheckbox3" value="option1"> C/C++
+                        </label>
+                    </div>
+                </div>
+                <br><br>
+                
+                <label class="labelsClass" for="inlineCheckbox4"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>    Frameworks</label><br><br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="framework" id="inlineCheckbox4" value="option1"> React.js
+                        </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="framework" id="inlineCheckbox5" value="option1"> Node.js
+                        </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="framework" id="inlineCheckbox6" value="option1"> Express.js
+                        </label>
+                    </div>
+                </div>
+                <br><br>
+                <label class="labelsClass" for="inlineCheckbox7"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>    Databases</label><br><br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="database" id="inlineCheckbox7" value="option1"> MongoDB
+                        </label>
+                    </div>
+                    <div class="col-sm-4">
+                        <label class="checkbox-inline">
+                            <input type="checkbox" name="database" id="inlineCheckbox8" value="option1"> MySQL
+                        </label>
+                    </div>
+                </div>
+                <br><br>
+            </form>
+            <input style="width:100%"type="submit" class="btn btn-primary" name="button" value="Search">  
+        </div>
+    </div>    
+  </div>
   
+  <div>
+    <a href="/profile">Edit your profile</a>
+  </div>
+  <div id="person-template" style="visibility:hidden;">
+    <div class="media" style="padding: 10px; border: 1px solid #e5e5e5">
+      <div class="media-left">
+        <img class="media-object" width="64px" height="64px" src="http://www.sheffield.com/wp-content/uploads/2013/06/placeholder.png" alt="" style="border-radius: 100%">
+      </div>
+      <div class="media-body">
+        <div class="media-heading person-name" style="font-size: 25px"></div>
+        <div class="media-heading person-email"></div>
+        <div class="media-heading person-skillset"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div id="results-container" class="col-md-5"></div>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103Q_vQYcYg&callback=initMap">
+</script>
 <script>
   function initMap() {
-    var userLocation = {lat: {{lat}}, lng: {{long}} };
+    var uluru = {lat: {{lat}}, lng: {{long}} };
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 1,
-      center: userLocation
+      zoom: 13,
+      center: uluru
     });
     var marker = new google.maps.Marker({
-      position: userLocation,
+      position: uluru,
       map: map
-    });
-    
-    var marker2 = new google.maps.Marker({
-      position: {lat: 34, lng: 20},
-      map: map,
-      label: '1'
     });
   }
 </script>
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103Q_vQYcYg&callback=initMap">
-  </script>
-
-
-  <h3>Search for Projects</h3>
-  <div class="row"></div>
-    <div class="col-md-7">
-      <div id="map" style="height:400px;width:100%"></div>    
-    </div>    
-    <div class="col-md-5">
-      {{> resultsList userResults=1 results=results }}
-    </div>
-  </div>  
-  <div style="margin-top: 400px">
-    <a href="/profile">Edit your profile</a>
-
-
-<h3>Search for Users</h3>
-<form action="/search" method="post">
-  Max Distance (km):<br>
-  <input type="text" name="maxDistance" value=0><br>
-  <input type="submit" name="button" value="Search"><br>
-
-  <input type="checkbox" name="language" value="python"> python <br>
-  <input type="checkbox" name="language" value="java"> java <br>
-  <input type="checkbox" name="language" value="c"> c/c++ <br>
-
-  <input type="checkbox" name="framework" value="react.js"> react.js <br>
-  <input type="checkbox" name="framework" value="node.js"> node.js <br>
-  <input type="checkbox" name="framework" value="express.js"> express.js <br>
-
-  <input type="checkbox" name="database" value="mongodb"> MongoDB <br>
-  <input type="checkbox" name="database" value="mysql"> MySQL <br>
-
-</form>
-
-
-  </div>
-
+<style>
+    body {
+        background-color: #ecf0f1;
+    }
+    .labelsClass {
+        font-size: 16px;
+    }
+    .checkbox-inline {
+        font-size: 16px;
+    }
+</style>
