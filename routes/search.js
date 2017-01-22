@@ -31,7 +31,7 @@ router.post('/', function(req, res, next) {
 
   var query = { location: { $nearSphere: { $geometry: { 
     type: "Point", coordinates: [long, lat] }, $maxDistance: maxDistance } },
-     };
+  };
 
   MongoClient.connect(url, function(err, db) {
     findUsers(db, query, function(result) {
@@ -54,7 +54,6 @@ router.post('/', function(req, res, next) {
       res.send(result);
     });
   });
-
 });
 
 var compare = function(a, b) {
@@ -78,7 +77,7 @@ var countMatches = function(userSkills, wantedSkills) {
 }
 
 var binarySearch = function(A, i) {
-  var mid, low=0, high=A.length - 1;
+  var mid, low = 0, high = A.length - 1;
 
   if (A.length == 0)
     return false;
@@ -91,6 +90,7 @@ var binarySearch = function(A, i) {
       low = mid + 1;
     }
   }
+  
   if (A[low] == i)
     return true;
   else
