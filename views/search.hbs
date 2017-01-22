@@ -1,18 +1,31 @@
-<h3>My Google Maps Demo</h3>
-<div id="map" style="height:400px;width:100%"></div>
-<script>
-  function initMap() {
-    var uluru = {lat: -25.363, lng: 131.044};
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 4,
-      center: uluru
-    });
-    var marker = new google.maps.Marker({
-      position: uluru,
-      map: map
-    });
-  }
-</script>
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103Q_vQYcYg&callback=initMap">
-</script>
+  <script>
+    function initMap() {
+      var uluru = {lat: -25.363, lng: 131.044};
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: uluru
+      });
+      var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+      });
+    }
+  </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103Q_vQYcYg&callback=initMap">
+  </script>
+  <h3>Search for Projects</h3>
+  <div class="row"></div>
+    <div class="col-md-7">
+      <div id="map" style="height:400px;width:100%"></div>    
+    </div>    
+    <div class="col-md-5">
+      {{> resultsList userResults=1 results=results }}
+    </div>
+  </div>  
+  <div style="margin-top: 400px">
+      <li>Skill 1</li>
+      <li>Skill 2</li>
+  </div>
+
+

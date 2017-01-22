@@ -8,7 +8,8 @@ var router = express.Router();
 var url = 'mongodb://localhost:27017/devsideprojects';
 
 router.get('/', function(req, res, next) {
-	res.render('search');
+	var results = [{name:"Bob Smith", email:"bob@example.com", skillset:"C++"}, {name:"John Doe", email:"bob@example.com", skillset:"C, C++, Python"}];
+	res.render('search', {results: results});
 });
 
 router.post('/', function(req, res, next) {
