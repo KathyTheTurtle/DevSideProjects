@@ -19,7 +19,7 @@ router.get('/', function(req, res, next) {
     mysql: ""
   }
 
-  if (!req.session.user[0]) {
+  if (!req.session.user) {
     res.redirect('/');
   }
 
