@@ -19,6 +19,10 @@ router.get('/', function(req, res, next) {
     mysql: ""
   }
 
+  if (!req.session.user[0]) {
+    res.redirect('/');
+  }
+
   var findUserQuery = { 
       username: req.session.user[0].username
   };

@@ -9,6 +9,10 @@ var session = require('client-sessions');
 var url = 'mongodb://localhost:27017/devsideprojects';
 
 router.get('/', function(req, res, next) {
+  if (!req.session.user[0]) {
+    res.redirect('/');
+  }
+  
 	var long = req.session.user[0].location.coordinates[0];
   var lat = req.session.user[0].location.coordinates[1];
 
