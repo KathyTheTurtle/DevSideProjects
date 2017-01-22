@@ -1,9 +1,36 @@
-<a href="/profile">Edit your profile</a>
+  <script>
+    function initMap() {
+      var uluru = {lat: -25.363, lng: 131.044};
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: uluru
+      });
+      var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+      });
+    }
+  </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103Q_vQYcYg&callback=initMap">
+  </script>
+  <h3>Search for Projects</h3>
+  <div class="row"></div>
+    <div class="col-md-7">
+      <div id="map" style="height:400px;width:100%"></div>    
+    </div>    
+    <div class="col-md-5">
+      {{> resultsList userResults=1 results=results }}
+    </div>
+  </div>  
+  <div style="margin-top: 400px">
+    <a href="/profile">Edit your profile</a>
+
 
 <h3>Search for Users</h3>
 <form action="/search" method="post">
   Max Distance (km):<br>
-  <input type="text" name="maxDistance" value=0><br>
+  <input type="text" name="maxDistance"><br>
   <input type="submit" name="button" value="Search"><br>
 
   <input type="checkbox" name="language" value="python"> python <br>
@@ -33,6 +60,8 @@
     });
   }
 </script>
-<script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103Q_vQYcYg&callback=initMap">
-</script>
+
+
+    </form>
+  </div>
+
