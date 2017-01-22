@@ -68,7 +68,7 @@
                 </div>
                 <br><br>
             </form>
-            <input style="width:100%"type="submit" class="btn btn-primary" name="button" value="Search">  
+            <input id="searchSubmit" style="width:100%"type="submit" class="btn btn-primary" name="button" value="Search">  
         </div>
     </div>    
   </div>
@@ -97,17 +97,38 @@
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103Q_vQYcYg&callback=initMap">
 </script>
 <script>
-  function initMap() {
-    var uluru = {lat: {{lat}}, lng: {{long}} };
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
-      center: uluru
+    $(document).ready(function() {
+        $('#searchSubmit').click(function() {
+           $.ajax({
+              url: '/',
+              data: {
+                 format: 'json'
+              },
+              error: function() {
+                 $('#results-container').html('<p>An error has occurred</p>');
+              },
+              dataType: 'jsonp',
+              success: function(data) {
+                 var $title = $('<h1>').text(data.talks[0].talk_title);
+                 var $description = $('<p>').text(data.talks[0].talk_description);
+                 $('#results-container').append("<p>Hello</p>")
+              },
+              type: 'GET'
+           });
+        });
+
     });
-    var marker = new google.maps.Marker({
-      position: uluru,
-      map: map
-    });
-  }
+    function initMap() {
+            var uluru = {lat: {{lat}}, lng: {{long}} };
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 13,
+              center: uluru
+            });
+            var marker = new google.maps.Marker({
+              position: uluru,
+              map: map
+            });
+        } 
 </script>
 <style>
     body {
