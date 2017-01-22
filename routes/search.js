@@ -20,29 +20,78 @@ router.post('/', function(req, res, next) {
   var lat = req.session.user[0].location.coordinates[1];
 
   var maxDistance = parseInt(req.body.maxDistance) * 1000;
-  console.log("maxDistance");
-  console.log(maxDistance);
+  var wantedLanguageSkillset = makeArray(req.body.language);
+  var wantedFrameworkSkillset = makeArray(req.body.framework);
 
   var query = { location: { $nearSphere: { $geometry: { 
-    type: "Point", coordinates: [long, lat] }, $maxDistance: maxDistance } } };
+    type: "Point", coordinates: [long, lat] }, $maxDistance: maxDistance } },
+     };
   MongoClient.connect(url, function(err, db) {
     findUsers(db, query, function(result) {
+      var points;
+
+      for (var i = 0; i < result.length; i++) {
+        points = 0;
+        //points += countMatches(result[i].skillset.language, wantedLanguageSkillset);
+        //points += countMatches(result[i].skillset.framework, wantedFrameworkSkillset);
+      } 
     });
   });
 
 });
 
+var countMatches = function(userSkills, wantedSkills) {
+  matchingSkills = 0;
+  userSkills = userSkills.sort();
+
+  for (var i = 0; i < wantedSkills.length; i++) {
+    if (binarySearch(userSkills, wantedSkills[i])) 
+      matchingSkills++;
+  }
+  
+  return matchingSkills;
+}
+
+var binarySearch = function(A, i) {
+  var mid, low=0, high=A.length - 1;
+
+  if (A.length == 0)
+    return false;
+
+  while (high > low) {
+    mid = Math.floor((low+high)/2);
+    if (i <= A[mid]) {
+      high = mid;
+    } else {
+      low = mid + 1;
+    }
+  }
+  if (A[low] == i)
+    return true;
+  else
+    return false;
+}
+
+var makeArray = function(result) {
+  if (typeof(result) === 'string') {
+    return [result];
+  } else {
+    return result;
+  }
+}
+
 var findUsers = function(db, query, callback) {
   // Get the documents collection
   var collection = db.collection('users');
   // Find some documents
+  console.log("Search query");
   console.log(query);
   collection.createIndex({ location: "2dsphere" });
-  collection.find(query).toArray(function(err, docs) {
+  collection.find(query, {username: 0}).toArray(function(err, result) {
     assert.equal(err, null);
     console.log("Found the following records");
-    console.log(docs);
-    callback(docs);
+    console.log(result);
+    callback(result);
   });      
 }
 
