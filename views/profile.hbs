@@ -1,18 +1,81 @@
-<h1>Profile</h1>
-<form action="/profile" method="post">
-  Langauges:<br>
-  <input type="checkbox" name="language" value="python" {{python}}> python <br>
-  <input type="checkbox" name="language" value="java" {{java}}> java <br>
-  <input type="checkbox" name="language" value="c" {{c}}> c/c++ <br>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <h1 style="text-align: center;">Profile</h1>
+      <div class="panel panel-login" style="padding: 20px; height: 360px">
+        <form action="/profile" method="post">
+          <!--Langauges:<br>
+          <input type="checkbox" name="language" value="python" {{python}}> python <br>
+          <input type="checkbox" name="language" value="java" {{java}}> java <br>
+          <input type="checkbox" name="language" value="c" {{c}}> c/c++ <br>-->
 
-  Frameworks:<br>
-  <input type="checkbox" name="framework" value="reactjs" {{reactjs}}> react.js <br>
-  <input type="checkbox" name="framework" value="nodejs" {{nodejs}}> node.js <br>
-  <input type="checkbox" name="framework" value="expressjs" {{expressjs}}> express.js <br>
+          <label class="labelsClass" for="inlineCheckbox1"><span class="glyphicon glyphicon-text-size" aria-hidden="true"></span>    Languages</label><br><br>
+          <div id="languages" class="row">
+            <div class="col-sm-4">
+              <label class="checkbox-inline">
+                <input type="checkbox" name="language" id="inlineCheckbox1" value="python" {{python}}> Python
+              </label>
+            </div>            
+            <div class="col-sm-4">
+              <label class="checkbox-inline">
+                <input type="checkbox" name="language" id="inlineCheckbox2" value="java" {{java}}> Java
+              </label>
+            </div>
+            <div class="col-sm-4">
+              <label class="checkbox-inline">
+                <input type="checkbox" name="language" id="inlineCheckbox3" value="c" {{c}}> C/C++
+              </label>
+            </div>
+          </div>
+          <br><br>
 
-  Databases:<br>
-  <input type="checkbox" name="database" value="mongodb" {{mongodb}}> MongoDB <br>
-  <input type="checkbox" name="database" value="mysql" {{mysql}}> MySQL <br>
+          <!--Frameworks:<br>
+          <input type="checkbox" name="framework" value="reactjs" {{reactjs}}> react.js <br>
+          <input type="checkbox" name="framework" value="nodejs" {{nodejs}}> node.js <br>
+          <input type="checkbox" name="framework" value="expressjs" {{expressjs}}> express.js <br>-->
 
-  <input type="submit" name="button" value="save"><br>
-</form>
+          <label class="labelsClass" for="inlineCheckbox4"><span class="glyphicon glyphicon-book" aria-hidden="true"></span>    Frameworks</label><br><br>
+          <div id="frameworks" class="row">
+            <div class="col-sm-4">
+              <label class="checkbox-inline">
+                <input type="checkbox" name="framework" id="inlineCheckbox4" value="reactjs" {{reactjs}}> React.js
+              </label>
+            </div>
+            <div class="col-sm-4">
+              <label class="checkbox-inline">
+                <input type="checkbox" name="framework" id="inlineCheckbox5" value="nodejs" {{nodejs}}> Node.js
+              </label>
+            </div>
+            <div class="col-sm-4">
+              <label class="checkbox-inline">
+                <input type="checkbox" name="framework" id="inlineCheckbox6" value="expressjs" {{expressjs}}> Express.js
+              </label>
+            </div>
+          </div>
+          <br><br>
+
+          <!--Databases:<br>
+          <input type="checkbox" name="database" value="mongodb" {{mongodb}}> MongoDB <br>
+          <input type="checkbox" name="database" value="mysql" {{mysql}}> MySQL <br>-->
+
+          <label class="labelsClass" for="inlineCheckbox7"><span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>    Databases</label><br><br>
+          <div id="databases" class="row">
+            <div class="col-sm-4">
+              <label class="checkbox-inline">
+                <input type="checkbox" name="database" id="inlineCheckbox7" value="mongodb" {{mongodb}}> MongoDB
+              </label>
+            </div>
+            <div class="col-sm-4">
+              <label class="checkbox-inline">
+                <input type="checkbox" name="database" id="inlineCheckbox8" value="mysql" {{mysql}}> MySQL
+              </label>
+            </div>
+          </div>
+          <br><br>
+
+          <input type="submit" style="width:100%"type="submit" class="btn btn-primary" name="button" value="save"><br>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
