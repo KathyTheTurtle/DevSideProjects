@@ -105,10 +105,8 @@
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103Q_vQYcYg&callback=initMap">
 </script>
 <script>
-    $(document).ready(function() {
-        $(".closeResult").click(function() {
-            
-        });
+    var map;
+    $(document).ready(function() {        
         $('#searchSubmit').click(function() {
            event.preventDefault();
            var maxDistance = $('#maxDistance').val();
@@ -139,22 +137,36 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103
               success: function(data) {
                 for(var i = 0; i < data.length; i++) {
                     var template = $.parseHTML($("#person-template").html());
-                    $('#results-container').append(template);                    
-                    $(".person-username", template).text(data[i].username);
+                    $('#results-container').append(template);
+
+                    $(".person-username", template).text((i + 1).toString() + ". " + data[i].username);
                     $(".person-email", template).text(data[i].email);
                     $(".person-skillset", template).text(data[i].skillset.languages[0]);
                     $(template).css("visibility", "visible");
+                    var marker = new google.maps.Marker({
+                      position: {lng: data[i].location.coordinates[0], lat: data[i].location.coordinates[1]},
+                      map: map,
+                      label: (i + 1).toString(),
+                      animation: google.maps.Animation.DROP
+                    });
+                    marker.setMap(map);
                 }
-                $("#person-template").remove();                 
+                $("#person-template").remove();
+
               },
               type: 'POST'
            });
         });
 
     });
+
+    $(".closeResult").click(function() {
+        $(this).closest("div").css("visibility", "none"); 
+    });
+
     function initMap() {
             var uluru = {lat: {{lat}}, lng: {{long}} };
-            var map = new google.maps.Map(document.getElementById('map'), {
+            map = new google.maps.Map(document.getElementById('map'), {
               zoom: 13,
               center: uluru
             });
