@@ -41,10 +41,13 @@ router.post('/', function(req, res, next) {
         var points;
         for (var i = 0; i < result.length; i++) {
           points = 0;
-          points += countMatches(result[i].skillset.languages, wantedLanguageSkillset);
-          points += countMatches(result[i].skillset.frameworks, wantedFrameworkSkillset);
-          points += countMatches(result[i].skillset.databases, wantedDatabaseSkillset);
-          
+
+          if (!result[i].skillset) {
+            points += countMatches(result[i].skillset.languages, wantedLanguageSkillset);
+            points += countMatches(result[i].skillset.frameworks, wantedFrameworkSkillset);
+            points += countMatches(result[i].skillset.databases, wantedDatabaseSkillset);
+          }
+
           result[i].points = points;
         }
 
@@ -113,7 +116,7 @@ var findUsers = function(db, query, callback) {
   console.log("Search query");
   console.log(query);
   collection.createIndex({ location: "2dsphere" });
-  collection.find(query, {username: 0}).toArray(function(err, result) {
+  collection.find(query/*, {username: 0}*/).toArray(function(err, result) {
     assert.equal(err, null);
     console.log("Found the following records");
     console.log(result);
