@@ -22,23 +22,40 @@ router.post('/', function(req, res, next) {
   var maxDistance = parseInt(req.body.maxDistance) * 1000;
   var wantedLanguageSkillset = makeArray(req.body.language);
   var wantedFrameworkSkillset = makeArray(req.body.framework);
+  var wantedDatabaseSkillset = makeArray(req.body.database);
 
   var query = { location: { $nearSphere: { $geometry: { 
     type: "Point", coordinates: [long, lat] }, $maxDistance: maxDistance } },
      };
+
   MongoClient.connect(url, function(err, db) {
     findUsers(db, query, function(result) {
+
       var points;
 
       for (var i = 0; i < result.length; i++) {
         points = 0;
-        //points += countMatches(result[i].skillset.language, wantedLanguageSkillset);
-        //points += countMatches(result[i].skillset.framework, wantedFrameworkSkillset);
-      } 
+        points += countMatches(result[i].skillset.languages, wantedLanguageSkillset);
+        points += countMatches(result[i].skillset.frameworks, wantedFrameworkSkillset);
+        points += countMatches(result[i].skillset.databases, wantedDatabaseSkillset);
+        
+        result[i].points = points;
+      }
+      result.sort(compare);
+
+      res.send(result);
     });
   });
 
 });
+
+var compare = function(a, b) {
+  if (a.points < b.points)
+    return 1;
+  if (a.points > b.points)
+    return -1;
+  return 0;
+}
 
 var countMatches = function(userSkills, wantedSkills) {
   matchingSkills = 0;
