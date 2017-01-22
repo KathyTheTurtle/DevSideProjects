@@ -20,7 +20,7 @@ var app = express();
 
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
-app.set('views', __dirname + '/views' );
+app.set('views', __dirname + '/views');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
   cookieName: 'session',
-  secret: Math.random().toString(36).substr(2, 10);,
+  secret: Math.random().toString(36).substr(2, 10),
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
 }));
