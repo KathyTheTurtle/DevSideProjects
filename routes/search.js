@@ -73,11 +73,12 @@ var binarySearch = function(A, i) {
 }
 
 var makeArray = function(result) {
-  if (typeof(result) === 'string') {
+  if (!result) 
+    return [];
+  else if (typeof(result) === 'string') 
     return [result];
-  } else {
+  else 
     return result;
-  }
 }
 
 var findUsers = function(db, query, callback) {

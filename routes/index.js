@@ -10,21 +10,6 @@ var url = 'mongodb://localhost:27017/devsideprojects';
 /* GET home page. */
 router.get('/', function(req, res, next) {
 	res.render('index');
-
-  // Use connect method to connect to the server
-  /*MongoClient.connect(url, function(err, db) {
-  	assert.equal(null, err);
-    console.log("Connected successfully to server GET");
-
-    var query = {'firstname': 'annon'}
-    findDocuments(db, query, function(query_result) {
-      console.log("WE GOT BACK: ");
-      console.log(query_result);
-      res.render('index', { name: query_result[0].name });
-      db.close();
-    });
-  });*/
-
 });
 
 

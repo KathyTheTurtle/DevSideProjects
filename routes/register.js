@@ -44,9 +44,9 @@ router.post('/', function(req, res, next) {
   								coordinates: [long, lat]
   							},
   							skillset: {
-  								language: [], 
-  								framework: [], 
-  								database: []
+  								languages: [], 
+  								frameworks: [], 
+  								databases: []
   							} 
 		      			};
 						
