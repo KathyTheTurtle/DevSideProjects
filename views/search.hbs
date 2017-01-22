@@ -78,7 +78,7 @@
     <a href="/profile">Edit your profile</a>
   </div>
   <div id="person-template" style="visibility:hidden;">
-    <div class="media" style="padding: 10px; border: 1px solid #e5e5e5">
+    <div class="media panel panel-login" style="width: 100%; padding: 10px; border: 1px solid #e5e5e5;">
       <div class="media-left">
         <img class="media-object" width="64px" height="64px" src="http://www.sheffield.com/wp-content/uploads/2013/06/placeholder.png" alt="" style="border-radius: 100%">
       </div>
@@ -92,8 +92,7 @@
   </div>
 </div>
 
-<div id="results-container" class="col-md-5">
-    
+<div id="results-container" class="col-md-5">    
 </div>
 
 <script async defer
@@ -131,7 +130,10 @@ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDR9CYAbTv-HcIOFADymm_1103
               success: function(data) {
                 alert(data);
                 for(var i = 0; i < data.length; i++) {
-                    $('#results-container').append("<p>" + data[i].email + "</p>");
+                    var template = $.parseHTML($("#person-template").html());
+                    $('#results-container').append(template);                    
+                    $(".person-email", template).text(data[i].email);
+                    $(template).css("visibility", "visible");
                 }                 
               },
               type: 'POST'
