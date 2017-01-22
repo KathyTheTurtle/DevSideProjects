@@ -32,18 +32,21 @@ router.post('/', function(req, res, next) {
 
   MongoClient.connect(url, function(err, db) {
     findUsers(db, query, function(result) {
+      result.splice(0, 1);
 
-      var points;
+      if (result.length > 0) {
+        var points;
+        for (var i = 0; i < result.length; i++) {
+          points = 0;
+          points += countMatches(result[i].skillset.languages, wantedLanguageSkillset);
+          points += countMatches(result[i].skillset.frameworks, wantedFrameworkSkillset);
+          points += countMatches(result[i].skillset.databases, wantedDatabaseSkillset);
+          
+          result[i].points = points;
+        }
 
-      for (var i = 0; i < result.length; i++) {
-        points = 0;
-        points += countMatches(result[i].skillset.languages, wantedLanguageSkillset);
-        points += countMatches(result[i].skillset.frameworks, wantedFrameworkSkillset);
-        points += countMatches(result[i].skillset.databases, wantedDatabaseSkillset);
-        
-        result[i].points = points;
+        result.sort(compare);
       }
-      result.sort(compare);
 
       res.send(result);
     });
