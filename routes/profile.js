@@ -8,7 +8,43 @@ var session = require('client-sessions');
 var url = 'mongodb://localhost:27017/devsideprojects';
 
 router.get('/', function(req, res, next) {
-	res.render('profile');
+  var checkedData = {
+    python: "",
+    java: "",
+    c: "",
+    reactjs: "",
+    nodejs: "",
+    expressjs: "",
+    mongodb: "",
+    mysql: ""
+  }
+
+  var findUserQuery = { 
+      username: req.session.user[0].username
+  };
+
+  MongoClient.connect(url, function(err, db) {
+    findUser(db, findUserQuery, function(user) {
+      var languages = user[0].skillset.languages;
+      var frameworks = user[0].skillset.frameworks;
+      var databases = user[0].skillset.databases;
+
+      var i;
+      for (i = 0; i < languages.length; i++) {
+        checkedData[languages[i]] = "checked";
+      }
+      for (i = 0; i < frameworks.length; i++) {
+        checkedData[frameworks[i]] = "checked";
+      }
+      for (i = 0; i < databases.length; i++) {
+        checkedData[databases[i]] = "checked";
+      }
+
+      console.log("checkedData", checkedData);
+
+      res.render('profile', checkedData);
+    });
+  });
 });
 
 router.post('/', function(req, res, next) {
@@ -16,6 +52,7 @@ router.post('/', function(req, res, next) {
   var languages = makeArray(req.body.language);
   var frameworks = makeArray(req.body.framework);
   var databases = makeArray(req.body.database);
+
   // Use connect method to connect to the server
   MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
@@ -32,6 +69,20 @@ router.post('/', function(req, res, next) {
     });
   });
 });
+
+var findUser = function(db, query, callback) {
+  // Get the users collection
+  var collection = db.collection('users');
+
+  // Find some documents
+  console.log(query);
+  collection.find(query).toArray(function(err, user) {
+    assert.equal(err, null);
+    console.log("Found the following records");
+    console.log(user);
+    callback(user);
+  });      
+}
 
 var updateUser = function(db, user, updateQuery, callback) {
   // Get the documents collection
